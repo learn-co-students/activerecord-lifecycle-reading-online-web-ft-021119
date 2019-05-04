@@ -18,10 +18,13 @@ class PostsController < ApplicationController
 	end
 
 	def update
-		binding.pry
 	  @post = Post.find(params[:id])
-	  @post.update(post_params)
-	  redirect_to post_path(@post)
+
+	  if @post.update(post_params)
+	  	redirect_to post_path(@post)
+		else
+			render :edit
+		end
 	end
 
 	def edit
@@ -31,6 +34,6 @@ class PostsController < ApplicationController
 private
 
  	def post_params
-		params.permit(:title, :description, :post_status, :author_id)
+		params.require(:post).permit(:title, :description)
 	end
 end
